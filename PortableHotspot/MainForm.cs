@@ -419,7 +419,7 @@ class MainForm : Form
         try
         {
             using var ping = new System.Net.NetworkInformation.Ping();
-            var reply = await ping.SendAsync("1.1.1.1", 3000);
+            var reply = await ping.SendPingAsync("1.1.1.1", 3000);
             if (reply.Status != System.Net.NetworkInformation.IPStatus.Success)
             {
                 lblTest.Text = L.T("offline");
