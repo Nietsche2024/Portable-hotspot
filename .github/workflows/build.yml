@@ -1,0 +1,28 @@
+name: Build PortableHotspot
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish Windows application
+        run: dotnet publish PortableHotspot/PortableHotspot.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o out
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: PortableHotspot-Windows-x64
+          path: out/PortableHotspot.exe
+          if-no-files-found: error
